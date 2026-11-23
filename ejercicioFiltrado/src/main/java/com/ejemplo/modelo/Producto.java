@@ -23,6 +23,9 @@ public class Producto {
  @Column(precision = 12, scale = 2)
  private BigDecimal precio;
 
+ public Producto(String nombre, double precio) {
+ }
+
  @Override
  public final boolean equals(Object o) {
   if (this == o) return true;
