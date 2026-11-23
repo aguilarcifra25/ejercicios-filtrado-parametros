@@ -37,16 +37,17 @@ public class ProductoController {
         ProductoFiltroDTO filtro = new ProductoFiltroDTO(nombre, precioMin, precioMax, marcas);
 
         return ResponseEntity.ok(productoService.buscarPorNombre(filtro));
-
-    @GetMapping
-    public List<Producto> buscar(
-            @RequestParam(required = false) String nombre,
-            @RequestParam(required = false)BigDecimal precioMin,
-            @RequestParam(required = false) BigDecimal precioMax,
-            @RequestParam(required = false) List<String> marcas
-            ){
-        var filtro = new ProductoFiltroDTO(nombre, precioMin, precioMax, marcas);
-        //var spec = ProductoSpecs.desde(filtro);
-        return repository.findAll();
     }
-}
+        @GetMapping
+        public List<Producto> buscar (
+                @RequestParam(required = false) String nombre,
+                @RequestParam(required = false) BigDecimal precioMin,
+                @RequestParam(required = false) BigDecimal precioMax,
+                @RequestParam(required = false) List < String > marcas
+            ){
+            var filtro = new ProductoFiltroDTO(nombre, precioMin, precioMax, marcas);
+            //var spec = ProductoSpecs.desde(filtro);
+            return repository.findAll();
+        }
+    }
+
