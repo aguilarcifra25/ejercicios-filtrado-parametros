@@ -10,6 +10,7 @@ import java.util.Map;
 
 @Service
 public class ProductoService {
+
     private final ProductoRepository productoRepository;
 
     public ProductoService(ProductoRepository productoRepository) {
@@ -54,5 +55,9 @@ public class ProductoService {
             i++;
         }
         return false;
+    public List<Producto> buscarPorNombre(String nombre) {
+
+        return productoRepository.findByNombreContainingIgnoreCase(nombre);
+
     }
 }

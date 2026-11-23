@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Map;
 public interface ProductoRepository extends JpaRepository<Producto, Long> {
-    //EndPoint v1
+
+    //filtro por nombre
+    List<Producto> findByNombreContainingIgnoreCase(String nombre);
 
 }
