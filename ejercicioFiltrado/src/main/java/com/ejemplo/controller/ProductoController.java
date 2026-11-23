@@ -22,9 +22,5 @@ public class ProductoController {
         this.productoService = productoService;
     }
 
-    @GetMapping("/v1")
-    public List<Producto> filtrar(@RequestParam Map<String, String> filtros) {
-        log.info("Filtros recibidos: {}", filtros);
-        return productoService.filtrar(filtros);
-    }
+
 }
