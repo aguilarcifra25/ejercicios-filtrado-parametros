@@ -8,5 +8,4 @@ public record ProductoFiltroDTO(
         BigDecimal precioMin,
         BigDecimal precioMax,
         List<String> marcas
-) {
-}
+) {}

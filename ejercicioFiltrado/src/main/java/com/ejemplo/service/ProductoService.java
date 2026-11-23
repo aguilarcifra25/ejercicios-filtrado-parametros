@@ -1,7 +1,10 @@
 package com.ejemplo.service;
 
+import com.ejemplo.ProductoEspecificado;
+import com.ejemplo.dto.ProductoFiltroDTO;
 import com.ejemplo.modelo.Producto;
 import com.ejemplo.repositorio.ProductoRepository;
+import org.springframework.data.jpa.domain.PredicateSpecification;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -17,48 +20,27 @@ public class ProductoService {
         this.productoRepository = productoRepository;
     }
 
-    public List<Producto> filtrar(Map<String, String> filtros) {
-        String nombre = filtros.get("nombre");
-        List<Producto> resultado = new ArrayList<>();
+    public List<Producto> buscarPorPrecio(ProductoFiltroDTO filtro) {
+        PredicateSpecification<Producto> spec =
+                ProductoEspecificado.filtrarPorNombre(filtro.nombre())
+                        .and(ProductoEspecificado.filtrarPorPrecio(filtro.precioMin(), filtro.precioMax()));
 
-        for (Producto p : productoRepository.findAll()) {
-            if (cumpleNombre(p, nombre) && cumpleRangos(p, filtros)) {
-                resultado.add(p);
-            }
-        }
-        return resultado;
+        return productoRepository.findAll(spec);
     }
 
-    // Si no hay nombre, vale todo
-    private boolean cumpleNombre(Producto p, String nombre) {
-        if (nombre == null) {
-            return true;
-        }
-        return p.getNombre().toLowerCase().contains(nombre.toLowerCase());
+    public List<Producto> buscarPorMarca(ProductoFiltroDTO filtro) {
+        PredicateSpecification<Producto> spec =
+                ProductoEspecificado.filtrarPorNombre(filtro.nombre())
+                        .and(ProductoEspecificado.filtrarPorPrecio(filtro.precioMin(), filtro.precioMax()))
+                        .and(ProductoEspecificado.filtrarPorMarcas(filtro.marcas()));
+
+        return productoRepository.findAll(spec);
     }
 
-    // Si no hay rangos, vale todo
-    // Si hay rangos, basta con cumplir uno
-    private boolean cumpleRangos(Producto p, Map<String, String> filtros) {
-        if (!filtros.containsKey("min1")) {
-            return true;
+    public List<Producto> buscarPorNombre(ProductoFiltroDTO filtro) {
+        if (filtro.nombre() == null || filtro.nombre().isBlank()) {
+            return productoRepository.findAll();
         }
-
-        int i = 1;
-        while (filtros.containsKey("min" + i)) {
-            double min = Double.parseDouble(filtros.get("min" + i));
-            double max = Double.parseDouble(filtros.get("max" + i));
-            double precio = p.getPrecio().doubleValue();
-            if (precio >= min && precio <= max) {
-                return true;
-            }
-            i++;
-        }
-        return false;
-    }
-        public List<Producto> buscarPorNombre(String nombre) {
-
-        return productoRepository.findByNombreContainingIgnoreCase(nombre);
-
+        return productoRepository.findAll(ProductoEspecificado.filtrarPorNombre(filtro.nombre()));
     }
 }

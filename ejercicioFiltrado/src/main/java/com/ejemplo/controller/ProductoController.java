@@ -5,6 +5,7 @@ import com.ejemplo.modelo.Producto;
 import com.ejemplo.repositorio.ProductoRepository;
 import com.ejemplo.service.ProductoService;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -25,6 +26,17 @@ public class ProductoController {
         this.repository = repository;
         this.productoService = productoService;
     }
+
+    @GetMapping("/nombre")
+    public ResponseEntity<List<Producto>> filtrar(
+            @RequestParam(required = false) String nombre,
+            @RequestParam(required = false) BigDecimal precioMin,
+            @RequestParam(required = false) BigDecimal precioMax,
+            @RequestParam(required = false) List<String> marcas) {
+
+        ProductoFiltroDTO filtro = new ProductoFiltroDTO(nombre, precioMin, precioMax, marcas);
+
+        return ResponseEntity.ok(productoService.buscarPorNombre(filtro));
 
     @GetMapping
     public List<Producto> buscar(

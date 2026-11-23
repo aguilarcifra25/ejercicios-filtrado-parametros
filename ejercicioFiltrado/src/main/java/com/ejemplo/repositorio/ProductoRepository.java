@@ -8,7 +8,4 @@ import java.util.List;
 import java.util.Map;
 public interface ProductoRepository extends JpaRepository<Producto, Long>, JpaSpecificationExecutor<Producto> {
 
-    //filtro por nombre
-    List<Producto> findByNombreContainingIgnoreCase(String nombre);
-
 }
