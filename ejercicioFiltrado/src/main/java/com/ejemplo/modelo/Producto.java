@@ -23,6 +23,8 @@ public class Producto {
  @Column(precision = 12, scale = 2)
  private BigDecimal precio;
 
+
+ private String marca;
  public Producto(String nombre, double precio) {
  }
 
